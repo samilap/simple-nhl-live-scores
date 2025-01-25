@@ -15,26 +15,26 @@ def get_scores():
     try:
         response = requests.get(URL_SCORES_NOW, timeout=20)
         response.raise_for_status() # if response not 200
-        scores = response.json()
+        scores_data = response.json()
 
-        if "games" not in scores:
+        if "games" not in scores_data:
             print(f"{COLOR_ERROR}Error: Unexpected data format.{COLOR_RESET}")
             return {}
-        return scores
+        return scores_data
 
     except requests.exceptions.RequestException as long_error:
         short_error = str(long_error).split(':')[-1].strip()
         print(f"{COLOR_ERROR}Network error: {short_error}{COLOR_RESET}")
         return {}
 
-def show_scores(scores):
-    if len(scores) == 0: return
+def show_scores(scores_data):
+    if len(scores_data) == 0: return
 
-    print(f"\nNHL Live Scores ({scores.get('currentDate', 'Unknown')})\n")
+    print(f"\nNHL Live Scores ({scores_data.get('currentDate', 'Unknown')})\n")
     print(f"{'Away  ':>18}{'Score':6} {'Home':<16} {'Time':<5} {'Period':<8} {'State'}")
     print("-"*62)
 
-    for game in scores["games"]:
+    for game in scores_data["games"]:
         game_state = game.get("gameState", "Unknown")
         away_team = game.get("awayTeam", {}).get("name", {}).get("default", "Unknown")
         home_team = game.get("homeTeam", {}).get("name", {}).get("default", "Unknown")
@@ -67,9 +67,9 @@ def safe_int(value):
         return int(0)
 
 def main():
-    parser = argparse.ArgumentParser(description="Simple NHL live scores")
-    parser.add_argument("--update_interval", type=int, metavar="update_interval", default=30,
-                        help="Update interval (seconds) for fetching live NHL scores. Default 30s.")
+    parser = argparse.ArgumentParser(description="Simple Python script to display live NHL scores in terminal.")
+    parser.add_argument("--update_interval", type=int, metavar="UPDATE_INTERVAL", default=30,
+                        help="Interval (in seconds) for live NHL score updates. Default is 30 seconds.")
     args = parser.parse_args()
     update_interval = max(args.update_interval, 1) # At least 1 second between updates
 
