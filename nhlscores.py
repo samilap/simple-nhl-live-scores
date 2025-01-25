@@ -22,8 +22,9 @@ def get_scores():
             return {}
         return scores
 
-    except requests.exceptions.RequestException as error:
-        print(f"{COLOR_ERROR}Network error: {error}{COLOR_RESET}")
+    except requests.exceptions.RequestException as long_error:
+        short_error = str(long_error).split(':')[-1].strip()
+        print(f"{COLOR_ERROR}Network error: {short_error}{COLOR_RESET}")
         return {}
 
 def show_scores(scores):
