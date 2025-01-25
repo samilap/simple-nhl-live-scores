@@ -38,8 +38,8 @@ def show_scores(scores):
         game_state = game.get("gameState", "Unknown")
         away_team = game.get("awayTeam", {}).get("name", {}).get("default", "Unknown")
         home_team = game.get("homeTeam", {}).get("name", {}).get("default", "Unknown")
-        away_score = game.get("awayTeam", {}).get("score", "0")
-        home_score = game.get("homeTeam", {}).get("score", "0")
+        away_score = safe_int(game.get("awayTeam", {}).get("score", "0"))
+        home_score = safe_int(game.get("homeTeam", {}).get("score", "0"))
         game_clock = game.get("clock", {}).get("timeRemaining", "00:00")
         game_period_number = game.get("periodDescriptor", {}).get("number", "0")
         game_period_type = game.get("periodDescriptor", {}).get("periodType", "N/A")
@@ -59,6 +59,12 @@ def show_scores(scores):
         print(f"{away_color}{away_team+' ':>17}{COLOR_RESET} {away_score:<1} - {home_score:<2} {home_color}"
               f"{home_team:<16}{COLOR_RESET} {game_clock} ({game_period_number}) {game_period_type:<3} {state_color} {game_state}{COLOR_RESET}")
     return
+
+def safe_int(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return int(0)
 
 def main():
     parser = argparse.ArgumentParser(description="Simple NHL live scores")
