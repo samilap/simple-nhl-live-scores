@@ -3,7 +3,7 @@ import time
 import argparse
 import requests
 
-url_scores_now = "https://api-web.nhle.com/v1/score/now"
+URL_SCORES_NOW = "https://api-web.nhle.com/v1/score/now"
 
 COLOR_RESET = '\033[0m'
 COLOR_WINNER = '\033[92m'
@@ -13,7 +13,7 @@ COLOR_ERROR = '\033[91m'
 
 def get_scores():
     try:
-        response = requests.get(url_scores_now, timeout=20)
+        response = requests.get(URL_SCORES_NOW, timeout=20)
         response.raise_for_status() # if response not 200
         scores = response.json()
 
