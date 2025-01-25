@@ -1,0 +1,72 @@
+import os
+import time
+import requests
+
+url_scores_now = "https://api-web.nhle.com/v1/score/now"
+update_interval = 30
+
+COLOR_RESET = '\033[0m'
+COLOR_WINNER = '\033[92m'
+COLOR_LOSER = '\033[31m'
+COLOR_FINAL_SCORE = '\033[32m'
+COLOR_ERROR = '\033[91m'
+
+def get_scores():
+    try:
+        response = requests.get(url_scores_now, timeout=20)
+        response.raise_for_status() # if response not 200
+        scores = response.json()
+
+        if "games" not in scores:
+            print(f"{COLOR_ERROR}Error: Unexpected data format.{COLOR_RESET}")
+            return {}
+        return scores
+
+    except requests.exceptions.RequestException as error:
+        print(f"{COLOR_ERROR}Network error: {error}{COLOR_RESET}")
+        return {}
+
+def show_scores(scores):
+    if len(scores) == 0: return
+
+    print(f"\nNHL Live Scores ({scores.get("currentDate")})\n")
+    print(f"{'Away  ':>18}{'Score':6} {'Home':<16} {'Time':<5} {'Period':<8} {'State'}")
+    print("-"*62)
+
+    for game in scores["games"]:
+        game_state = game.get("gameState", "Unknown")
+        away_team = game.get("awayTeam", {}).get("name", {}).get("default", "Unknown")
+        home_team = game.get("homeTeam", {}).get("name", {}).get("default", "Unknown")
+        away_score = game.get("awayTeam", {}).get("score", "0")
+        home_score = game.get("homeTeam", {}).get("score", "0")
+        game_clock = game.get("clock", {}).get("timeRemaining", "00:00")
+        game_period_number = game.get("periodDescriptor", {}).get("number", "0")
+        game_period_type = game.get("periodDescriptor", {}).get("periodType", "N/A")
+
+        away_color = COLOR_RESET
+        home_color = COLOR_RESET
+        state_color = COLOR_RESET
+        if game_state == 'FINAL' or game_state == 'OFF':
+            state_color = COLOR_FINAL_SCORE
+            if away_score > home_score:
+                away_color = COLOR_WINNER
+                home_color = COLOR_LOSER
+            if home_score > away_score:
+                home_color = COLOR_WINNER
+                away_color = COLOR_LOSER
+
+        print(f"{away_color}{away_team+' ':>17}{COLOR_RESET} {away_score:<1} - {home_score:<2} {home_color}"
+              f"{home_team:<16}{COLOR_RESET} {game_clock} ({game_period_number}) {game_period_type:<3} {state_color} {game_state}{COLOR_RESET}")
+    return
+
+def main():
+    try:
+        while True:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            show_scores(get_scores())
+            time.sleep(update_interval)
+    except KeyboardInterrupt:
+        print("Exiting...")
+
+if __name__ == '__main__':
+    main()
