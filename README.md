@@ -1,22 +1,25 @@
 # simple-nhl-live-scores
-Simple Python script to display NHL live scores in terminal.
+Simple Python script to display live NHL scores in the terminal, fetched directly from the official NHL API.
 
 ![scores](https://github.com/user-attachments/assets/bf5bf728-f626-463d-9148-f371084d74cc)
 
 
 ## Requirements
-  The required dependencies are:
 
   - `requests` library
   
-You can install the dependencies using `pip` by running:
+Install the dependencies with the following command:
 
 ```
 pip install -r requirements.txt
 ```
+Alternatively, you can install the requests library directly with:
+```
+pip install requests
+```
 
 ## Usage
-Once the dependencies are installed, you can run the script using the following command:
+Once the dependencies are installed, run the script with the following command:
 
   On macOS/Linux:
   ```
@@ -29,11 +32,12 @@ Once the dependencies are installed, you can run the script using the following 
   ```
 
 ## Optional Arguments
-You can specify an optional argument to adjust the update interval.
+Adjust the score update interval (default: 30 seconds).
 ```
---update_interval: Set the interval (in seconds) between fetching live NHL scores. The default is 30 seconds.
+--update_interval SECONDS
 ```
-Example with a custom update interval of 10 seconds:
+
+Example: Fetch scores every 10 seconds:
 ```
 python nhlscores.py --update_interval 10
 ```
@@ -42,7 +46,7 @@ python nhlscores.py --update_interval 10
 
 ## Setting Up And Using Virtual Environment (Optional)
 
-It is **highly recommended** to use a virtual environment to avoid conflicts with other Python projects.
+Using a virtual environment is **highly recommended** to avoid conflicts with other Python projects.
 
 **Note**: The venv module requires a minimum Python version of 3.3
 
@@ -68,19 +72,18 @@ It is **highly recommended** to use a virtual environment to avoid conflicts wit
     .\venv\Scripts\activate
     ```
 
-3. **Install the required dependencies:**
-    After activating the virtual environment, install the dependencies listed in requirements.txt:
+3. **Install the dependencies:** After activation, install the required packages:
     ```
     pip install -r requirements.txt
     ```
-4. **Deactivate the Virtual Environment:**
-	When you're done, you can deactivate the virtual environment with the following command:
+4. **Deactivate the virtual environment:** When finished, deactivate with:
     ```
     deactivate
     ```
-## Usage with Virtual Environment
+## Running the Script with the Virtual Environment
 
-After setting up the virtual environment and installing the dependencies, you can run the script as follows:
+After setting up **venv** and installing dependencies, run the script:
+
   On macOS/Linux:
   ```
   source venv/bin/activate
@@ -94,12 +97,11 @@ After setting up the virtual environment and installing the dependencies, you ca
   deactivate
   ```
 
-## Creating a Windows Shortcut for Running the Script with a Virtual Environment (Optional)
-You can create a shortcut to easily run the script with the virtual environment activated.
+## Creating a Windows Shortcut to Run the Script with a Virtual Environment (Optional)
 
-1. Create a shortcut by holding Alt and dragging the nhlscores.py file to the desktop.
-2. Right-click the shortcut and edit the **Target** field to include the following command:
+1. Hold Alt and drag the nhlscores.py file to the desktop to create a shortcut.
+2. Right-click the shortcut, select properties and modify the **Target** field to:
 ```
 C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoExit -Command "cd 'X:\YOUR PATH TO FILE\'; .\.venv\Scripts\Activate; python .\nhlscores.py"
 ```
-Replace X:\YOUR PATH TO FILE\ with the actual path to the folder containing nhlscores.py.
+Replace X:\YOUR PATH TO FILE\ with the actual path to the folder containing nhlscores.py
