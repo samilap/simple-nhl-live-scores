@@ -30,7 +30,7 @@ def get_scores():
 def show_scores(scores):
     if len(scores) == 0: return
 
-    print(f"\nNHL Live Scores ({scores.get("currentDate")})\n")
+    print(f"\nNHL Live Scores ({scores.get('currentDate', 'Unknown')})\n")
     print(f"{'Away  ':>18}{'Score':6} {'Home':<16} {'Time':<5} {'Period':<8} {'State'}")
     print("-"*62)
 
