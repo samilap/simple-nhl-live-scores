@@ -1,9 +1,9 @@
 import os
 import time
+import argparse
 import requests
 
 url_scores_now = "https://api-web.nhle.com/v1/score/now"
-update_interval = 30
 
 COLOR_RESET = '\033[0m'
 COLOR_WINNER = '\033[92m'
@@ -61,6 +61,12 @@ def show_scores(scores):
     return
 
 def main():
+    parser = argparse.ArgumentParser(description="Simple NHL live scores")
+    parser.add_argument("--update_interval", type=int, metavar="update_interval", default=30,
+                        help="Update interval (seconds) for fetching live NHL scores. Default 30s.")
+    args = parser.parse_args()
+    update_interval = max(args.update_interval, 1) # At least 1 second between updates
+
     try:
         while True:
             os.system('cls' if os.name == 'nt' else 'clear')
