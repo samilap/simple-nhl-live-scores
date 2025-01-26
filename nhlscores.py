@@ -9,6 +9,8 @@ COLOR_RESET = '\033[0m'
 COLOR_WINNER = '\033[92m'
 COLOR_LOSER = '\033[31m'
 COLOR_FINAL_SCORE = '\033[32m'
+COLOR_LIVE_STATE = '\033[92m'
+COLOR_PRE_GAME = '\033[93m'
 COLOR_ERROR = '\033[91m'
 
 def get_scores():
@@ -47,6 +49,8 @@ def show_scores(scores_data):
         away_color = COLOR_RESET
         home_color = COLOR_RESET
         state_color = COLOR_RESET
+        if game_state == 'PRE': state_color = COLOR_PRE_GAME
+        if game_state == 'LIVE' or game_state == 'CRIT': state_color = COLOR_LIVE_STATE
         if game_state == 'FINAL' or game_state == 'OFF':
             state_color = COLOR_FINAL_SCORE
             if away_score > home_score:
